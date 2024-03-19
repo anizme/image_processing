@@ -1,6 +1,6 @@
 import cv2 as cv
 import matplotlib.pyplot as plt
-
+import numpy as np
 
 # Load an image from file as function
 def load_image(image_path):
@@ -32,8 +32,18 @@ def grayscale_image(image):
     Where the R, G, B are the values for each of the corresponding channels. We will do this by
     creating an array called img_gray with the same shape as img
     """
-    grayscale_image = cv.cvtColor(image, cv.COLOR_RGB2GRAY)
-    return grayscale_image
+    height, width = image.shape[:2]
+    img_gray = np.zeros((height, width), dtype=np.uint8)
+    
+    for i in range(height):
+        for j in range(width):
+            R, G, B = image[i, j]
+            p = 0.299 * R + 0.587 * G + 0.114 * B
+            img_gray[i, j] = p
+    
+    return img_gray
+    # grayscale_image = cv.cvtColor(image, cv.COLOR_RGB2GRAY)
+    # return grayscale_image
 
 
 # Save an image as function
