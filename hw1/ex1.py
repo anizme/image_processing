@@ -89,13 +89,16 @@ if __name__ == "__main__":
     display_image(img_gray, "Grayscale Image")
 
     # Save the grayscale image
-    save_image(img_gray, "images/lena_gray.jpg")
+    save_image(img_gray, "images/gray.jpg")
 
     # Flip the grayscale image
     img_gray_flipped = flip_image(img_gray)
 
     # Display the flipped grayscale image
     display_image(img_gray_flipped, "Flipped Grayscale Image")
+
+    # Save the rotated grayscale image
+    save_image(img_gray_flipped, "images/gray_flipped.jpg")
 
     # Rotate the grayscale image
     img_gray_rotated = rotate_image(img_gray, 45)
@@ -104,7 +107,7 @@ if __name__ == "__main__":
     display_image(img_gray_rotated, "Rotated Grayscale Image")
 
     # Save the rotated grayscale image
-    save_image(img_gray_rotated, "images/lena_gray_rotated.jpg")
+    save_image(img_gray_rotated, "images/gray_rotated.jpg")
 
     # Show the images
     plt.show() 
