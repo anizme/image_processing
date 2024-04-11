@@ -7,7 +7,7 @@ def load_image(image_path):
     """
     Load an image from file, using OpenCV
     """
-    return cv.imread('images/uet.png')
+    return cv.imread(image_path)
 
 # Display an image as function
 def display_image(image, title="Image"):
@@ -77,7 +77,7 @@ def rotate_image(image, angle):
 
 if __name__ == "__main__":
     # Load an image from file
-    img = load_image("images/uet.png")
+    img = load_image("hw1/images/uet.png")
 
     # Display the image
     display_image(img, "Original Image")
@@ -89,7 +89,7 @@ if __name__ == "__main__":
     display_image(img_gray, "Grayscale Image")
 
     # Save the grayscale image
-    save_image(img_gray, "images/gray.jpg")
+    save_image(img_gray, "hw1/images/gray.jpg")
 
     # Flip the grayscale image
     img_gray_flipped = flip_image(img_gray)
@@ -98,7 +98,7 @@ if __name__ == "__main__":
     display_image(img_gray_flipped, "Flipped Grayscale Image")
 
     # Save the rotated grayscale image
-    save_image(img_gray_flipped, "images/gray_flipped.jpg")
+    save_image(img_gray_flipped, "hw1/images/gray_flipped.jpg")
 
     # Rotate the grayscale image
     img_gray_rotated = rotate_image(img_gray, 45)
@@ -107,7 +107,7 @@ if __name__ == "__main__":
     display_image(img_gray_rotated, "Rotated Grayscale Image")
 
     # Save the rotated grayscale image
-    save_image(img_gray_rotated, "images/gray_rotated.jpg")
+    save_image(img_gray_rotated, "hw1/images/gray_rotated.jpg")
 
     # Show the images
     plt.show() 
