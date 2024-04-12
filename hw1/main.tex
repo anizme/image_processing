@@ -52,7 +52,7 @@ showstringspaces=false
 
 \begin{document}
 {\fontsize{36}{12}\selectfont
-\title{INT3404E 20- Image Processing Homework 2}
+\title{INT3404E 20- Image Processing Homework 1}
 \author{Lê Thị Hải Anh - 22028162}
 \date{March 2024}
 }
@@ -171,21 +171,40 @@ def rotate_image(image, angle):
 \subsection{Hàm thực thi}
 \begin{python}
 if __name__ == "__main__":
-    img = load_image("images/uet.png")
+    i# Load an image from file
+    img = load_image("hw1/images/uet.png")
+
+    # Display the image
     display_image(img, "Original Image")
 
+    # Convert the image to grayscale
     img_gray = grayscale_image(img)
+
+    # Display the grayscale image
     display_image(img_gray, "Grayscale Image")
-    save_image(img_gray, "images/gray.jpg")
 
+    # Save the grayscale image
+    save_image(img_gray, "hw1/images/gray.jpg")
+
+    # Flip the grayscale image
     img_gray_flipped = flip_image(img_gray)
+
+    # Display the flipped grayscale image
     display_image(img_gray_flipped, "Flipped Grayscale Image")
-    save_image(img_gray_flipped, "images/gray_flipped.jpg")
 
+    # Save the rotated grayscale image
+    save_image(img_gray_flipped, "hw1/images/gray_flipped.jpg")
+
+    # Rotate the grayscale image
     img_gray_rotated = rotate_image(img_gray, 45)
-    display_image(img_gray_rotated, "Rotated Grayscale Image")
-    save_image(img_gray_rotated, "images/gray_rotated.jpg")
 
+    # Display the rotated grayscale image
+    display_image(img_gray_rotated, "Rotated Grayscale Image")
+
+    # Save the rotated grayscale image
+    save_image(img_gray_rotated, "hw1/images/gray_rotated.jpg")
+
+    # Show the images
     plt.show() 
 \end{python}
 
