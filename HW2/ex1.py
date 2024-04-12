@@ -104,7 +104,12 @@ def psnr(gt_img, smooth_img):
         Outputs:
             psnr_score: PSNR score
     """
-    # Need to implement here
+    mse = np.mean((gt_img - smooth_img) ** 2)
+    if mse == 0:
+        return float('inf')
+    max_pixel = 255.0
+    psnr_score = 20 * math.log10(max_pixel / math.sqrt(mse))
+    return psnr_score
 
 
 
@@ -128,26 +133,19 @@ def show_res(before_img, after_img):
     plt.show()
 
 
-def display(img, tit):
-    image_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    plt.imshow(image_rgb)
-    plt.title(tit)
-    plt.axis('off')
-    plt.show()
-
 if __name__ == '__main__':
-    img_noise = "hw2/ex1_images/noise.png" # <- need to specify the path to the noise image
-    img_gt = "hw2/ex1_images/" # <- need to specify the path to the gt image
+    img_noise = "hw2/ex1_images/noise.png"  #path to the noise image
+    img_gt = "hw2/ex1_images/ori_img.png"   #path to the groundtruth image
     img = read_img(img_noise)
     filter_size = 3
 
     # Mean filter
     mean_smoothed_img = mean_filter(img, filter_size)
     show_res(img, mean_smoothed_img)
-    # print('PSNR score of mean filter: ', psnr(img, mean_smoothed_img))
+    print('PSNR score of mean filter: ', psnr(img, mean_smoothed_img))
 
     # Median filter
     median_smoothed_img = median_filter(img, filter_size)
     show_res(img, median_smoothed_img)
-    # print('PSNR score of median filter: ', psnr(img, median_smoothed_img))
+    print('PSNR score of median filter: ', psnr(img, median_smoothed_img))
 
