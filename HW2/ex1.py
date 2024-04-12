@@ -142,7 +142,7 @@ if __name__ == '__main__':
     img_noise = "hw2/ex1_images/noise.png" # <- need to specify the path to the noise image
     img_gt = "hw2/ex1_images/" # <- need to specify the path to the gt image
     img = read_img(img_noise)
-    filter_size = 50
+    filter_size = 3
 
     # Mean filter
     mean_smoothed_img = mean_filter(img, filter_size)
