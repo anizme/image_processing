@@ -16,7 +16,7 @@ def read_img(img_path):
     return cv2.imread(img_path, 0)
 
 
-def padding_img(img, filter_size=3):
+def padding_img(img, filter_size=50):
     """
     The surrogate function for the filter functions.
     The goal of the function: replicate padding the image such that when applying the kernel with the size of filter_size, the padded image will be the same size as the original image.
@@ -27,7 +27,41 @@ def padding_img(img, filter_size=3):
     Return:
         padded_img: cv2 image: the padding image
     """
-  # Need to implement here
+    #set up for padding
+    height, width = img.shape
+    pad_size = filter_size // 2
+    padded_img = np.zeros((height + 2 * pad_size, width + 2 * pad_size), dtype=img.dtype)
+
+    #copy the original image to the center of padded image
+    padded_img[pad_size:pad_size + height, pad_size:pad_size + width] = img
+
+    #replicate padding at non-corner borders
+    for i in range(pad_size):
+        for j in range(pad_size, width + pad_size):
+            padded_img[i, j] = img[0, j - pad_size]
+    #padded_img[:pad_size, pad_size:-pad_size] = img[0, :]    #top rows
+    for i in range(height + pad_size, height + 2 * pad_size):
+        for j in range(pad_size, width + pad_size):
+            padded_img[i, j] = img[height - 1, j - pad_size]
+    #padded_img[-pad_size:, pad_size:-pad_size] = img[-1, :]  #bottom rows
+    for i in range(pad_size, pad_size + height):
+        for j in range(pad_size):
+            padded_img[i, j] = img[i - pad_size, 0]
+    #padded_img[pad_size:-pad_size, :pad_size] = img[:, 0].reshape(-1, 1)    #left columns
+    for i in range(pad_size, height + pad_size):
+        for j in range(pad_size + width, width + 2 * pad_size):
+            padded_img[i, j] = img[i - pad_size, width - 1]
+    #padded_img[pad_size:-pad_size, -pad_size:] = img[:, -1].reshape(-1, 1)  #right columns
+
+    #replicate padding at corners
+    padded_img[:pad_size, :pad_size] = img[0, 0]            #top-left
+    padded_img[:pad_size, -pad_size:] = img[0, -1]         #top-right
+    padded_img[-pad_size:, :pad_size] = img[-1, 0]          #bottom-left
+    padded_img[-pad_size:, -pad_size:] = img[-1, -1]        #bottom-right
+    display(img,"orgin")
+    display(padded_img, "padded")
+
+    return padded_img
 
 def mean_filter(img, filter_size=3):
     """
@@ -39,7 +73,17 @@ def mean_filter(img, filter_size=3):
     Return:
         smoothed_img: cv2 image: the smoothed image with mean filter.
     """
-  # Need to implement here
+    #set up for smoothing
+    padded_img = padding_img(img, filter_size)
+    smoothed_img = np.zeros_like(img, dtype=img.dtype)
+    height, width = img.shape
+
+    for i in range(height):
+        for j in range(width):
+            smoothed_img[i, j] = np.mean(padded_img[i:i + filter_size, j:j + filter_size])
+
+    return smoothed_img
+
 
 def median_filter(img, filter_size=3):
     """
@@ -87,19 +131,26 @@ def show_res(before_img, after_img):
     plt.show()
 
 
+def display(img, tit):
+    image_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    plt.imshow(image_rgb)
+    plt.title(tit)
+    plt.axis('off')
+    plt.show()
+
 if __name__ == '__main__':
-    img_noise = "" # <- need to specify the path to the noise image
-    img_gt = "" # <- need to specify the path to the gt image
+    img_noise = "hw2/ex1_images/noise.png" # <- need to specify the path to the noise image
+    img_gt = "hw2/ex1_images/" # <- need to specify the path to the gt image
     img = read_img(img_noise)
-    filter_size = 3
+    filter_size = 50
 
     # Mean filter
     mean_smoothed_img = mean_filter(img, filter_size)
     show_res(img, mean_smoothed_img)
-    print('PSNR score of mean filter: ', psnr(img, mean_smoothed_img))
+    # print('PSNR score of mean filter: ', psnr(img, mean_smoothed_img))
 
-    # Median filter
-    median_smoothed_img = median_filter(img, filter_size)
-    show_res(img, median_smoothed_img)
-    print('PSNR score of median filter: ', psnr(img, median_smoothed_img))
+    # # Median filter
+    # median_smoothed_img = median_filter(img, filter_size)
+    # show_res(img, median_smoothed_img)
+    # print('PSNR score of median filter: ', psnr(img, median_smoothed_img))
 
