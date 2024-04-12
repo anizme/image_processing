@@ -60,15 +60,23 @@ def DFT_2D(gray_img):
         row_col_fft: (H, W): 2D numpy array that contains the column-wise FFT of the input image
     """
     h, w = gray_img.shape
-
     row_fft = np.zeros((h, w), dtype=complex)
+    row_col_fft_tp = np.zeros((w, h), dtype=complex)
+
     #apply for each row
     for x in range(h):
-        row_fft[x, :] = DFT_slow(gray_img[x, :])
+        row_fft[x, :] = np.fft.fft(gray_img[x, :])
+
+    #transpose row_fft
+    row_fft_tp = np.transpose(row_fft)
     
-    transpose_img = np.transpose()
-    #apply for each column
-    
+    #apply for each column of row_fft
+    for x in range(w):
+        row_col_fft_tp[x, :] = np.fft.fft(row_fft_tp[x, :])
+
+    row_col_fft = np.transpose(row_col_fft_tp)
+
+    return row_fft, row_col_fft
 
 
 
@@ -76,13 +84,13 @@ def DFT_2D(gray_img):
 if __name__ == '__main__':
   
   # ex1
-    x = np.random.random(1024)
-    print(np.allclose(DFT_slow(x), np.fft.fft(x)))
+    # x = np.random.random(1024)
+    # print(np.allclose(DFT_slow(x), np.fft.fft(x)))
   # ex2
-    # img = io_url.imread('https://img2.zergnet.com/2309662_300.jpg')
-    # gray_img = np.mean(img, -1)
-    # row_fft, row_col_fft = DFT_2D(gray_img)
-    # show_img(gray_img, row_fft, row_col_fft)
+    img = io_url.imread('https://img2.zergnet.com/2309662_300.jpg')
+    gray_img = np.mean(img, -1)
+    row_fft, row_col_fft = DFT_2D(gray_img)
+    show_img(gray_img, row_fft, row_col_fft)
 
  
 
