@@ -2,7 +2,6 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 import math
-import os
 
 
 def read_img(img_path):
@@ -19,8 +18,12 @@ def read_img(img_path):
 def padding_img(img, filter_size=3):
     """
     The surrogate function for the filter functions.
-    The goal of the function: replicate padding the image such that when applying the kernel with the size of filter_size, the padded image will be the same size as the original image.
-    WARNING: Do not use the exterior functions from available libraries such as OpenCV, scikit-image, etc. Just do from scratch using function from the numpy library or functions in pure Python.
+    The goal of the function: replicate padding the image such that 
+    when applying the kernel with the size of filter_size, the padded 
+    image will be the same size as the original image.
+    WARNING: Do not use the exterior functions from available libraries 
+    such as OpenCV, scikit-image, etc. Just do from scratch using 
+    function from the numpy library or functions in pure Python.
     Inputs:
         img: cv2 image: original image
         filter_size: int: size of square filter
@@ -30,29 +33,37 @@ def padding_img(img, filter_size=3):
     #set up for padding
     height, width = img.shape
     pad_size = filter_size // 2
-    padded_img = np.zeros((height + 2 * pad_size, width + 2 * pad_size), dtype=img.dtype)
+    padded_img = np.zeros((height + 2 * pad_size, width + 2 * pad_size), 
+                          dtype=img.dtype)
 
     #copy the original image to the center of padded image
     padded_img[pad_size:pad_size + height, pad_size:pad_size + width] = img
 
     #replicate padding at non-corner borders
-    padded_img[:pad_size, pad_size:-pad_size] = img[0, :]    #top rows
-    padded_img[-pad_size:, pad_size:-pad_size] = img[-1, :]  #bottom rows
-    padded_img[pad_size:-pad_size, :pad_size] = img[:, 0].reshape(-1, 1)    #left columns
-    padded_img[pad_size:-pad_size, -pad_size:] = img[:, -1].reshape(-1, 1)  #right columns
+    padded_img[:pad_size, 
+               pad_size:-pad_size] = img[0, :]                  #top rows
+    padded_img[-pad_size:, 
+               pad_size:-pad_size] = img[-1, :]                 #bottom rows
+    padded_img[pad_size:-pad_size, 
+               :pad_size] = img[:, 0].reshape(-1, 1)            #left columns
+    padded_img[pad_size:-pad_size, 
+               -pad_size:] = img[:, -1].reshape(-1, 1)          #right columns
 
     #replicate padding at corners
-    padded_img[:pad_size, :pad_size] = img[0, 0]            #top-left
-    padded_img[:pad_size, -pad_size:] = img[0, -1]         #top-right
-    padded_img[-pad_size:, :pad_size] = img[-1, 0]          #bottom-left
-    padded_img[-pad_size:, -pad_size:] = img[-1, -1]        #bottom-right
+    padded_img[:pad_size, :pad_size] = img[0, 0]                #top-left
+    padded_img[:pad_size, -pad_size:] = img[0, -1]              #top-right
+    padded_img[-pad_size:, :pad_size] = img[-1, 0]              #bottom-left
+    padded_img[-pad_size:, -pad_size:] = img[-1, -1]            #bottom-right
 
     return padded_img
 
 def mean_filter(img, filter_size=3):
     """
-    Smoothing image with mean square filter with the size of filter_size. Use replicate padding for the image.
-    WARNING: Do not use the exterior functions from available libraries such as OpenCV, scikit-image, etc. Just do from scratch using function from the numpy library or functions in pure Python.
+    Smoothing image with mean square filter with the size of filter_size. 
+    Use replicate padding for the image.
+    WARNING: Do not use the exterior functions from available libraries 
+    such as OpenCV, scikit-image, etc. Just do from scratch using 
+    function from the numpy library or functions in pure Python.
     Inputs:
         img: cv2 image: original image
         filter_size: int: size of square filter,
@@ -67,15 +78,19 @@ def mean_filter(img, filter_size=3):
     #smoothing
     for i in range(height):
         for j in range(width):
-            smoothed_img[i, j] = np.mean(padded_img[i:i + filter_size, j:j + filter_size])
+            smoothed_img[i, j] = np.mean(padded_img[i:i + filter_size, 
+                                                    j:j + filter_size])
 
     return smoothed_img
 
 
 def median_filter(img, filter_size=3):
     """
-        Smoothing image with median square filter with the size of filter_size. Use replicate padding for the image.
-        WARNING: Do not use the exterior functions from available libraries such as OpenCV, scikit-image, etc. Just do from scratch using function from the numpy library or functions in pure Python.
+        Smoothing image with median square filter with the size of filter_size. 
+        Use replicate padding for the image.
+        WARNING: Do not use the exterior functions from available libraries 
+        such as OpenCV, scikit-image, etc. Just do from scratch using 
+        function from the numpy library or functions in pure Python.
         Inputs:
             img: cv2 image: original image
             filter_size: int: size of square filter
@@ -90,7 +105,8 @@ def median_filter(img, filter_size=3):
     #smoothing
     for i in range(height):
         for j in range(width):
-            smoothed_img[i, j] = np.median(padded_img[i:i + filter_size, j:j + filter_size])
+            smoothed_img[i, j] = np.median(padded_img[i:i + filter_size, 
+                                                      j:j + filter_size])
 
     return smoothed_img
 
